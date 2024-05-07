@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h4>oi</h4>
+    <div id="content"></div>
+
+    <script>
+        fetch('/stream_response')
+        .then(response => {
+            const reader = response.body.getReader()
+            const decoder = new TextDecoder('utf-8')
+
+            reader.read().then(function process({done, value}){   
+                if (done) return;
+                document.getElementById('content').innerHTML += decoder.decode(value)
+                reader.read().then(process)
+        })
+        })
+    </script>
+</body>
+</html>
